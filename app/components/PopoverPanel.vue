@@ -21,7 +21,7 @@
                         v-if="resets"
                         size="sm"
                         variant="ghost"
-                        v-tooltip="tooltipsReady ? 'Reset' : undefined"
+                        v-tooltip="tooltipsReady ? t('action.reset') : undefined"
                         @click="$emit('reset')"
                     >
                         <RefreshCwIcon class="size-4" />
@@ -31,7 +31,7 @@
                         v-if="closes"
                         size="sm"
                         variant="ghost"
-                        v-tooltip="tooltipsReady ? 'Close' : undefined"
+                        v-tooltip="tooltipsReady ? t('action.close') : undefined"
                         @click="open = false"
                     >
                         <XIcon class="size-4" />
@@ -48,6 +48,7 @@
 import { ref, watch } from 'vue';
 import { Popover as UiPopover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { XIcon, RefreshCwIcon } from 'lucide-vue-next';
+import useI18n from '@/composables/useI18n';
 
 defineProps({
     title: { type: String },
@@ -60,6 +61,7 @@ defineEmits(['reset']);
 
 const open = ref(false);
 const tooltipsReady = ref(false);
+const { t } = useI18n();
 
 watch(open, (isOpen) => {
     tooltipsReady.value = false;

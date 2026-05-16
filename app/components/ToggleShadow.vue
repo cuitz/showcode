@@ -1,5 +1,9 @@
 <template>
-    <Toggle v-bind="$attrs" popover-title="Shadow Properties" settings-tooltip="Configure Shadow">
+    <Toggle
+        v-bind="$attrs"
+        :popover-title="`${t('common.shadow')} ${t('common.settings')}`"
+        :settings-tooltip="t('tooltip.configureShadow')"
+    >
         <template #popover>
             <div class="flex flex-col divide-y divide-zinc-200 dark:divide-zinc-800">
                 <div class="grid grid-cols-2 gap-2 divide-x divide-zinc-200 dark:divide-zinc-800">
@@ -15,7 +19,7 @@
                     </div>
 
                     <div class="flex w-full items-center justify-between gap-2 px-3 py-2">
-                        <Label class="w-full text-center">Blur</Label>
+                        <Label class="w-full text-center">{{ t('common.blur') }}</Label>
 
                         <Input
                             type="number"
@@ -39,7 +43,7 @@
                     </div>
 
                     <div class="flex w-full items-center justify-between gap-2 px-3 py-2">
-                        <Label class="w-full text-center">Spread</Label>
+                        <Label class="w-full text-center">{{ t('common.spread') }}</Label>
 
                         <Input
                             type="number"
@@ -62,6 +66,8 @@
 </template>
 
 <script setup>
+import useI18n from '@/composables/useI18n';
+
 defineProps({
     shadowColor: { type: Object, required: true },
     shadowX: { type: [Number, String], required: true },
@@ -77,4 +83,6 @@ defineEmits([
     'update:shadow-spread',
     'update:shadow-color',
 ]);
+
+const { t } = useI18n();
 </script>

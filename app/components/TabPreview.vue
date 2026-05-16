@@ -2,7 +2,7 @@
     <div>
         <ControlRow>
             <div class="flex w-full flex-col space-y-1 lg:w-auto">
-                <Label>Theme</Label>
+                <Label>{{ t('common.theme') }}</Label>
 
                 <Select v-model="localSettings.themeName">
                     <SelectTrigger>
@@ -17,7 +17,7 @@
             </div>
 
             <div class="flex w-full flex-col space-y-1 lg:w-auto">
-                <Label>Font Size</Label>
+                <Label>{{ t('common.fontSize') }}</Label>
 
                 <Input
                     min="1"
@@ -28,7 +28,7 @@
             </div>
 
             <div class="flex w-full flex-col space-y-1 lg:w-auto">
-                <Label>Font Family</Label>
+                <Label>{{ t('common.fontFamily') }}</Label>
 
                 <Select v-model="localSettings.fontFamily">
                     <SelectTrigger>
@@ -47,7 +47,7 @@
             </div>
 
             <div class="flex w-full flex-col space-y-1 lg:w-auto">
-                <Label>Line Height</Label>
+                <Label>{{ t('common.lineHeight') }}</Label>
 
                 <Input
                     min="0"
@@ -58,7 +58,7 @@
             </div>
 
             <div class="flex w-full flex-col space-y-1 lg:w-auto" :class="sceneLockedClasses">
-                <Label>Position</Label>
+                <Label>{{ t('common.position') }}</Label>
 
                 <div class="flex items-center">
                     <Select v-model="localSettings.position">
@@ -66,17 +66,17 @@
                             <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="center">Center</SelectItem>
-                            <SelectItem value="top">Top</SelectItem>
-                            <SelectItem value="bottom">Bottom</SelectItem>
-                            <SelectItem value="left">Left</SelectItem>
-                            <SelectItem value="right">Right</SelectItem>
+                            <SelectItem value="center">{{ t('common.center') }}</SelectItem>
+                            <SelectItem value="top">{{ t('common.top') }}</SelectItem>
+                            <SelectItem value="bottom">{{ t('common.bottom') }}</SelectItem>
+                            <SelectItem value="left">{{ t('common.left') }}</SelectItem>
+                            <SelectItem value="right">{{ t('common.right') }}</SelectItem>
                         </SelectContent>
                     </Select>
 
                     <PopoverSettings
-                        title="Margin Properties"
-                        tooltip="Configure Margin"
+                        :title="`${t('common.position')} ${t('common.margin')}`"
+                        :tooltip="t('tooltip.configureMargin')"
                         class="mx-1"
                         @reset="
                             localSettings.marginTop = settingsDefaults.marginTop;
@@ -103,7 +103,7 @@
         <ControlRow>
             <div class="flex flex-row gap-6">
                 <div class="flex flex-col items-center justify-between space-y-1">
-                    <Label>Header</Label>
+                    <Label>{{ t('common.header') }}</Label>
 
                     <div class="flex items-center">
                         <ToggleHeader
@@ -126,7 +126,7 @@
 
             <div class="flex flex-row gap-6">
                 <div class="flex flex-col items-center justify-between space-y-1">
-                    <Label>Line Numbers</Label>
+                    <Label>{{ t('common.lineNumbers') }}</Label>
 
                     <div class="flex items-center">
                         <Toggle v-model="localSettings.showLineNumbers" />
@@ -137,7 +137,7 @@
                     class="flex flex-col items-center justify-between space-y-1"
                     :class="sceneLockedClasses"
                 >
-                    <Label>Border</Label>
+                    <Label>{{ t('common.border') }}</Label>
 
                     <ToggleBorder
                         v-model="localSettings.showBorder"
@@ -156,7 +156,7 @@
                     class="flex flex-col items-center justify-between space-y-1"
                     :class="sceneLockedClasses"
                 >
-                    <Label>Shadow</Label>
+                    <Label>{{ t('common.shadow') }}</Label>
 
                     <ToggleShadow
                         v-model="localSettings.showShadow"
@@ -184,7 +184,7 @@
                     class="flex flex-col items-center justify-between space-y-1"
                     :class="sceneLockedClasses"
                 >
-                    <Label>Shine</Label>
+                    <Label>{{ t('common.shine') }}</Label>
 
                     <ToggleShine
                         v-model="localSettings.showShine"
@@ -198,7 +198,7 @@
                 </div>
 
                 <div class="flex flex-col items-center justify-between space-y-1">
-                    <Label>Social Badge</Label>
+                    <Label>{{ t('common.socialBadge') }}</Label>
 
                     <ToggleSocialBadge
                         v-model="localSettings.showSocialBadge"
@@ -219,7 +219,7 @@
 
                 <template v-if="blocks.length > 1">
                     <div class="flex flex-col items-center justify-between space-y-1">
-                        <Label>Dividers</Label>
+                        <Label>{{ t('common.dividers') }}</Label>
 
                         <div class="flex items-center">
                             <Toggle v-model="localSettings.showDividers" />
@@ -227,7 +227,11 @@
                     </div>
 
                     <div class="flex flex-col items-center justify-between space-y-1">
-                        <Label>Orientation ({{ localSettings.landscape ? 'L' : 'P' }})</Label>
+                        <Label>
+                            {{ t('common.orientation') }} ({{
+                                localSettings.landscape ? 'L' : 'P'
+                            }})
+                        </Label>
 
                         <div class="flex items-center">
                             <Toggle v-model="localSettings.landscape" />
@@ -242,7 +246,7 @@
         >
             <div class="flex w-full flex-col space-y-1 lg:w-auto">
                 <Label class="flex items-center space-x-2">
-                    <div>Border Radius</div>
+                    <div>{{ t('common.borderRadius') }}</div>
 
                     <span
                         class="text-xs whitespace-nowrap text-zinc-400 tabular-nums dark:text-zinc-500"
@@ -269,14 +273,16 @@
                             localSettings.borderRadiusLocked = !localSettings.borderRadiusLocked
                         "
                         v-tooltip="
-                            localSettings.borderRadiusLocked ? 'Unlock Corners' : 'Lock Corners'
+                            localSettings.borderRadiusLocked
+                                ? t('action.unlockCorners')
+                                : t('action.lockCorners')
                         "
                     />
 
                     <PopoverSettings
                         v-if="!localSettings.borderRadiusLocked"
-                        title="Border Radius Properties"
-                        tooltip="Configure Border Radius"
+                        :title="`${t('common.borderRadius')} ${t('common.settings')}`"
+                        :tooltip="t('tooltip.configureBorderRadius')"
                         @reset="
                             localSettings.borderRadiusTopLeft =
                                 settingsDefaults.borderRadiusTopLeft;
@@ -293,7 +299,7 @@
                                 class="grid grid-cols-2 divide-x divide-zinc-200 dark:divide-zinc-800"
                             >
                                 <div class="flex items-center justify-between p-2">
-                                    <Label>Top Left</Label>
+                                    <Label>{{ t('common.topLeft') }}</Label>
 
                                     <Input
                                         type="number"
@@ -303,7 +309,7 @@
                                 </div>
 
                                 <div class="flex items-center justify-between p-2">
-                                    <Label>Top Right</Label>
+                                    <Label>{{ t('common.topRight') }}</Label>
 
                                     <Input
                                         type="number"
@@ -317,7 +323,7 @@
                                 class="grid grid-cols-2 divide-x divide-zinc-200 dark:divide-zinc-800"
                             >
                                 <div class="flex items-center justify-between space-x-2 p-2">
-                                    <Label>Bottom Left</Label>
+                                    <Label>{{ t('common.bottomLeft') }}</Label>
 
                                     <Input
                                         type="number"
@@ -327,7 +333,7 @@
                                 </div>
 
                                 <div class="flex items-center justify-between space-x-2 p-2">
-                                    <Label>Bottom Right</Label>
+                                    <Label>{{ t('common.bottomRight') }}</Label>
 
                                     <Input
                                         type="number"
@@ -343,7 +349,7 @@
 
             <div class="flex w-full flex-col space-y-1 lg:w-auto" :class="sceneLockedClasses">
                 <Label class="flex items-center space-x-2">
-                    <div>Opacity</div>
+                    <div>{{ t('common.opacity') }}</div>
 
                     <span
                         class="text-xs whitespace-nowrap text-zinc-400 tabular-nums dark:text-zinc-500"
@@ -371,7 +377,7 @@
                 :class="sceneLockedClasses"
             >
                 <Label class="flex items-center space-x-2">
-                    <div>Scale</div>
+                    <div>{{ t('common.scale') }}</div>
 
                     <span
                         class="text-xs whitespace-nowrap text-zinc-400 tabular-nums dark:text-zinc-500"
@@ -396,7 +402,7 @@
 
             <div class="flex w-full flex-col space-y-1 lg:w-auto">
                 <Label class="flex items-center space-x-2">
-                    <div>Window Padding</div>
+                    <div>{{ t('common.windowPadding') }}</div>
 
                     <span
                         class="text-xs whitespace-nowrap text-zinc-400 tabular-nums dark:text-zinc-500"
@@ -421,14 +427,16 @@
                         :locked="localSettings.paddingLocked"
                         @click="localSettings.paddingLocked = !localSettings.paddingLocked"
                         v-tooltip="
-                            localSettings.paddingLocked ? 'Unlock All Sides' : 'Lock All Sides'
+                            localSettings.paddingLocked
+                                ? t('action.unlockAllSides')
+                                : t('action.lockAllSides')
                         "
                     />
 
                     <PopoverSettings
                         v-if="!localSettings.paddingLocked"
-                        title="Padding Properties"
-                        tooltip="Configure Padding"
+                        :title="`${t('common.windowPadding')} ${t('common.settings')}`"
+                        :tooltip="t('tooltip.configurePadding')"
                         @reset="
                             localSettings.paddingTop = settingsDefaults.paddingTop;
                             localSettings.paddingBottom = settingsDefaults.paddingBottom;
@@ -456,6 +464,7 @@
 <script setup>
 import useFonts from '@/composables/useFonts';
 import useSettings from '@/composables/useSettings';
+import useI18n from '@/composables/useI18n';
 import { computed, reactive, unref, watch } from 'vue';
 
 const props = defineProps({
@@ -468,6 +477,7 @@ const emit = defineEmits(['update']);
 
 const { settingsDefaults } = useSettings();
 const { fontFamilies } = useFonts();
+const { t } = useI18n();
 
 const localSettings = reactive(unref(props.settings));
 const sceneSelected = computed(() => localSettings.scene && localSettings.scene !== 'none');

@@ -3,6 +3,7 @@ import { mount } from '@vue/test-utils';
 import TabPreview from '~/components/TabPreview.vue';
 import useSettings from '~/composables/useSettings';
 import { SCENE_BROWSERBASE } from '~/data/scenes';
+import { DEFAULT_LOCALE, translate } from '~/i18n/messages';
 
 const passthroughStub = {
     template: '<div><slot /></div>',
@@ -63,7 +64,11 @@ describe('TabPreview', () => {
     it('keeps the theme selector changeable when a scene is selected', () => {
         const wrapper = mountPreview();
 
-        expect(fieldClasses(wrapper, 'Theme')).not.toContain('pointer-events-none');
-        expect(fieldClasses(wrapper, 'Position')).toContain('pointer-events-none');
+        expect(fieldClasses(wrapper, translate(DEFAULT_LOCALE, 'common.theme'))).not.toContain(
+            'pointer-events-none'
+        );
+        expect(fieldClasses(wrapper, translate(DEFAULT_LOCALE, 'common.position'))).toContain(
+            'pointer-events-none'
+        );
     });
 });

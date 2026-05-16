@@ -4,7 +4,9 @@
             <DialogHeader
                 class="shrink-0 border-b border-zinc-200 px-5 pt-4 pb-3 dark:border-zinc-800"
             >
-                <DialogTitle class="text-sm font-semibold">Saved Templates</DialogTitle>
+                <DialogTitle class="text-sm font-semibold">
+                    {{ t('menu.openTemplates') }}
+                </DialogTitle>
             </DialogHeader>
 
             <ScrollArea class="flex-1 overflow-auto">
@@ -20,7 +22,7 @@
                             <Button
                                 size="icon-sm"
                                 variant="ghost"
-                                v-tooltip.bottom="'Rename'"
+                                v-tooltip.bottom="t('action.rename')"
                                 @click="$emit('rename', template)"
                             >
                                 <EditIcon class="size-3.5" />
@@ -31,7 +33,7 @@
                                 size="icon-sm"
                                 variant="ghost"
                                 class="text-yellow-500"
-                                v-tooltip.bottom="'Clear Default'"
+                                v-tooltip.bottom="t('action.clearDefault')"
                                 @click="$emit('clearDefault', template)"
                             >
                                 <StarIcon class="size-3.5 fill-current" />
@@ -41,7 +43,7 @@
                                 v-else
                                 size="icon-sm"
                                 variant="ghost"
-                                v-tooltip.bottom="'Set as Default'"
+                                v-tooltip.bottom="t('action.setAsDefault')"
                                 @click="$emit('setDefault', template)"
                             >
                                 <StarIcon class="size-3.5" />
@@ -51,7 +53,7 @@
                                 size="icon-sm"
                                 variant="ghost"
                                 class="text-red-500 hover:text-red-600 dark:hover:text-red-400"
-                                v-tooltip.bottom="'Delete'"
+                                v-tooltip.bottom="t('action.delete')"
                                 @click="$emit('remove', template)"
                             >
                                 <XIcon class="size-3.5" />
@@ -97,7 +99,7 @@
                     >
                         <SaveIcon class="mb-1.5 size-5 text-zinc-400 dark:text-zinc-500" />
                         <span class="text-xs font-medium text-zinc-500 dark:text-zinc-400">
-                            Save Current
+                            {{ t('action.saveCurrent') }}
                         </span>
                     </button>
                 </div>
@@ -108,6 +110,7 @@
 
 <script setup>
 import { XIcon, ImageIcon, StarIcon, SaveIcon, EditIcon } from 'lucide-vue-next';
+import useI18n from '@/composables/useI18n';
 
 defineProps({
     modelValue: { type: [Boolean, Object], default: false },
@@ -122,4 +125,6 @@ defineEmits([
     'setDefault',
     'clearDefault',
 ]);
+
+const { t } = useI18n();
 </script>

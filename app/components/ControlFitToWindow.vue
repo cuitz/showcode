@@ -4,7 +4,7 @@
     >
         <Button variant="ghost" class="rounded-none rounded-l-xl" @click="$emit('apply')">
             <MinimizeIcon class="size-4" />
-            <span class="hidden md:inline">Fit to Window</span>
+            <span class="hidden md:inline">{{ t('action.fitToWindow') }}</span>
         </Button>
 
         <ButtonLock
@@ -12,11 +12,11 @@
             class="rounded-none"
             :locked="lockWindowSize"
             :class="{ 'rounded-r-xl': !lockWindowSize }"
-            v-tooltip="lockWindowSize ? 'Unlock Fit to Window' : 'Lock Fit to Window'"
+            v-tooltip="lockWindowSize ? t('action.unlockFitToWindow') : t('action.lockFitToWindow')"
             @click="$emit('update:lock-window-size', !lockWindowSize)"
         />
 
-        <PopoverPanel v-if="lockWindowSize" title="Fitting Properties">
+        <PopoverPanel v-if="lockWindowSize" :title="t('preferences.fitToWindow')">
             <template #trigger>
                 <Button variant="ghost" class="rounded-none rounded-r-xl">
                     <SettingsIcon class="size-4" />
@@ -26,7 +26,7 @@
             <div class="flex flex-col divide-y divide-zinc-200 dark:divide-zinc-800">
                 <div class="grid grid-cols-2 gap-2 divide-x divide-zinc-200 dark:divide-zinc-800">
                     <div class="flex w-full items-center justify-between gap-2 px-3 py-2">
-                        <Label class="w-full text-center">Padding X</Label>
+                        <Label class="w-full text-center">{{ t('common.paddingX') }}</Label>
 
                         <Input
                             type="number"
@@ -37,7 +37,7 @@
                     </div>
 
                     <div class="flex w-full items-center justify-between gap-2 px-3 py-2">
-                        <Label class="w-full text-center">Padding Y</Label>
+                        <Label class="w-full text-center">{{ t('common.paddingY') }}</Label>
 
                         <Input
                             type="number"
@@ -54,6 +54,9 @@
 
 <script setup>
 import { MinimizeIcon, SettingsIcon } from 'lucide-vue-next';
+import useI18n from '@/composables/useI18n';
+
+const { t } = useI18n();
 
 defineProps({
     lockWindowSize: { type: Boolean, required: true },

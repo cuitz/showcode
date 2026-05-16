@@ -31,13 +31,16 @@
             "
             @click="$emit('custom')"
         >
-            Custom
+            {{ t('common.custom') }}
         </Button>
     </div>
 </template>
 
 <script setup>
 import { isEqual } from 'lodash';
+import useI18n from '@/composables/useI18n';
+
+const { t } = useI18n();
 
 defineProps({
     aspectRatio: { type: Array, required: false },

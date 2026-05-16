@@ -23,18 +23,18 @@
             <!-- Hero Content -->
             <div class="mx-auto max-w-3xl text-center">
                 <p class="mb-4 text-xl font-bold tracking-widest text-indigo-400 uppercase">
-                    {{ error.statusCode === 404 ? '404' : 'Error' }}
+                    {{ error.statusCode === 404 ? '404' : t('error.generic') }}
                 </p>
 
                 <h1 class="mb-6 text-5xl font-black tracking-tight text-white sm:text-7xl">
-                    {{ error.statusCode === 404 ? 'Page not found' : 'Something went wrong' }}
+                    {{ error.statusCode === 404 ? t('error.notFound') : t('error.generic') }}
                 </h1>
 
                 <p class="mx-auto mt-6 mb-10 max-w-xl text-lg leading-8 text-zinc-400 sm:text-xl">
                     {{
                         error.statusCode === 404
-                            ? "Sorry, we couldn't find the page you're looking for. It might have been moved or doesn't exist."
-                            : error.message || 'An unexpected error occurred.'
+                            ? t('error.notFoundDescription')
+                            : error.message || t('error.unexpected')
                     }}
                 </p>
 
@@ -44,7 +44,7 @@
                         size="lg"
                         class="w-full rounded-full bg-white px-8 py-6 text-lg font-semibold text-zinc-950 transition-colors hover:bg-zinc-200 sm:w-auto"
                     >
-                        Go back home
+                        {{ t('error.goHome') }}
                     </Button>
                 </div>
             </div>
@@ -53,9 +53,12 @@
 </template>
 
 <script setup>
+import useI18n from '@/composables/useI18n';
+
 const props = defineProps({
     error: Object,
 });
 
+const { t } = useI18n();
 const handleError = () => clearError({ redirect: '/' });
 </script>

@@ -2,9 +2,9 @@
     <Dialog :open="modelValue" @update:open="$emit('update:modelValue', $event)">
         <DialogContent class="flex max-h-[80vh] max-w-2xl flex-col gap-0 p-0">
             <DialogHeader
-                class="shrink-0 border-b border-zinc-200 px-5 pb-3 pt-4 dark:border-zinc-800"
+                class="shrink-0 border-b border-zinc-200 px-5 pt-4 pb-3 dark:border-zinc-800"
             >
-                <DialogTitle class="text-sm font-semibold">Help Guide</DialogTitle>
+                <DialogTitle class="text-sm font-semibold">{{ t('menu.help') }}</DialogTitle>
             </DialogHeader>
 
             <ScrollArea class="flex-1 overflow-auto">
@@ -89,17 +89,21 @@
 </template>
 
 <script setup>
+import { computed } from 'vue';
+import useI18n from '@/composables/useI18n';
+
 defineProps({ modelValue: { type: [Boolean, Object], default: false } });
 defineEmits(['update:modelValue']);
 
-const sections = [
+const { t } = useI18n();
+
+const sections = computed(() => [
     {
-        title: 'Code Highlighting',
+        title: t('help.codeHighlighting'),
         blocks: [
             {
                 type: 'text',
-                content:
-                    'To highlight portions of your code to display an added, removed, or focused line, you can right click in the code editor and select from the context menu:',
+                content: t('help.highlightIntro'),
             },
             {
                 type: 'image',
@@ -108,8 +112,7 @@ const sections = [
             },
             {
                 type: 'text',
-                content:
-                    'Once a line has been highlighted, colored dots will be displayed indicating their highlight:',
+                content: t('help.highlightResult'),
             },
             {
                 type: 'image',
@@ -118,19 +121,18 @@ const sections = [
             },
             {
                 type: 'text',
-                content:
-                    'Highlights can also be toggled in the editor using the keyboard shortcuts below:',
+                content: t('help.keyboardShortcutIntro'),
             },
             {
                 type: 'table',
-                headers: ['Style', 'Keyboard Shortcut'],
+                headers: [t('help.style'), t('help.keyboardShortcut')],
                 rows: [
-                    { label: 'Added Line', keys: ['⌘/Ctrl', 'Shift', 'A'] },
-                    { label: 'Removed Line', keys: ['⌘/Ctrl', 'Shift', 'R'] },
-                    { label: 'Focused Line', keys: ['⌘/Ctrl', 'Shift', 'F'] },
+                    { label: t('help.addedLine'), keys: ['⌘/Ctrl', 'Shift', 'A'] },
+                    { label: t('help.removedLine'), keys: ['⌘/Ctrl', 'Shift', 'R'] },
+                    { label: t('help.focusedLine'), keys: ['⌘/Ctrl', 'Shift', 'F'] },
                 ],
             },
         ],
     },
-];
+]);
 </script>

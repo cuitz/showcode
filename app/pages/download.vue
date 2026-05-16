@@ -19,19 +19,20 @@
             <!-- Hero Content -->
             <div class="mx-auto max-w-3xl text-center">
                 <h1 class="mb-6 text-5xl font-black tracking-tight text-white sm:text-7xl">
-                    Design beautiful
+                    {{ t('download.headingStart') }}
                     <br />
                     <span
                         class="bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent"
                     >
-                        code screenshots
+                        {{ t('download.headingHighlight') }}
                     </span>
                 </h1>
 
                 <p class="mt-6 mb-10 text-lg leading-8 text-zinc-400 sm:text-xl">
-                    Showcode for Desktop gives you the tools to create, edit, and share beautiful
-                    code snippets directly from your machine.
-                    <strong class="font-semibold text-white">Now completely free.</strong>
+                    {{ t('download.description') }}
+                    <strong class="font-semibold text-white">
+                        {{ t('download.descriptionEmphasis') }}
+                    </strong>
                 </p>
 
                 <div class="flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -57,7 +58,7 @@
                             <polyline points="7 10 12 15 17 10" />
                             <line x1="12" x2="12" y1="15" y2="3" />
                         </svg>
-                        Download for {{ osName }}
+                        {{ t('action.downloadFor', { platform: osName }) }}
                     </Button>
 
                     <Button
@@ -67,11 +68,11 @@
                         class="w-full rounded-full bg-zinc-800 px-8 py-6 text-lg font-semibold text-white transition-colors hover:bg-zinc-700 sm:w-auto"
                         href="/"
                     >
-                        Open Web Version
+                        {{ t('action.openWebVersion') }}
                     </Button>
                 </div>
                 <p class="mt-6 text-sm font-medium text-zinc-500">
-                    Available for macOS, Windows, and Linux.
+                    {{ t('download.availablePlatforms') }}
                 </p>
             </div>
 
@@ -98,7 +99,7 @@
             <!-- Features / Footer simple section -->
             <div class="mt-24 border-t border-white/10 pt-10 text-center">
                 <p class="text-sm text-zinc-500">
-                    &copy; {{ new Date().getFullYear() }} Showcode. All rights reserved.
+                    &copy; {{ new Date().getFullYear() }} Showcode. {{ t('download.rights') }}
                 </p>
             </div>
         </div>
@@ -109,19 +110,21 @@
 import { ref, onMounted } from 'vue';
 import { UAParser } from 'ua-parser-js';
 import { isAppleSilicon } from 'ua-parser-js/device-detection';
+import useI18n from '@/composables/useI18n';
+
+const { t } = useI18n();
 
 useSeoMeta({
-    title: 'Download Showcode for Desktop',
-    description:
-        'Showcode for Desktop gives you the tools to create, edit, and share beautiful code snippets directly from your machine. Now completely free.',
-    ogTitle: 'Download Showcode for Desktop',
-    ogDescription: 'Design beautiful code screenshots. Available for macOS, Windows, and Linux.',
+    title: () => t('download.metaTitle'),
+    description: () => t('download.metaDescription'),
+    ogTitle: () => t('download.metaTitle'),
+    ogDescription: () => t('download.ogDescription'),
     twitterCard: 'summary_large_image',
 });
 
 if (!useRuntimeConfig().public.isDesktop) {
     defineOgImageComponent('Download', {
-        tagline: 'Showcode for Desktop. Now completely free.',
+        tagline: t('download.ogTagline'),
     });
 }
 

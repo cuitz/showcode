@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col divide-y divide-zinc-200 dark:divide-zinc-800">
         <div class="flex flex-col items-center justify-center gap-2 p-2">
-            <Label>Top</Label>
+            <Label>{{ t('common.top') }}</Label>
 
             <Input
                 type="number"
@@ -15,7 +15,7 @@
             class="flex items-center justify-between divide-x divide-zinc-200 dark:divide-zinc-800"
         >
             <div class="flex w-full items-center justify-center gap-2 p-2">
-                <Label>Left</Label>
+                <Label>{{ t('common.left') }}</Label>
 
                 <Input
                     type="number"
@@ -33,7 +33,7 @@
                     @update:model-value="$emit('update:margin-right', Number($event))"
                 />
 
-                <Label>Right</Label>
+                <Label>{{ t('common.right') }}</Label>
             </div>
         </div>
 
@@ -45,16 +45,20 @@
                 @update:model-value="$emit('update:margin-bottom', Number($event))"
             />
 
-            <Label>Bottom</Label>
+            <Label>{{ t('common.bottom') }}</Label>
         </div>
     </div>
 </template>
 
 <script setup>
+import useI18n from '@/composables/useI18n';
+
 defineProps({
     marginTop: Number,
     marginLeft: Number,
     marginRight: Number,
     marginBottom: Number,
 });
+
+const { t } = useI18n();
 </script>

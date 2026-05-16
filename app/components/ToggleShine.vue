@@ -1,9 +1,13 @@
 <template>
-    <Toggle v-bind="$attrs" popover-title="Shine Properties" settings-tooltip="Configure Shine">
+    <Toggle
+        v-bind="$attrs"
+        :popover-title="`${t('common.shine')} ${t('common.settings')}`"
+        :settings-tooltip="t('tooltip.configureShine')"
+    >
         <template #popover>
             <div class="flex flex-col divide-y divide-zinc-200 dark:divide-zinc-800">
                 <div class="flex w-full items-center justify-between gap-2 px-3 py-2">
-                    <Label class="w-full text-center">Width</Label>
+                    <Label class="w-full text-center">{{ t('common.width') }}</Label>
 
                     <Slider
                         :max="100"
@@ -21,7 +25,7 @@
                 </div>
 
                 <div class="flex w-full items-center justify-between gap-2 px-3 py-2">
-                    <Label class="w-full text-center">Height</Label>
+                    <Label class="w-full text-center">{{ t('common.height') }}</Label>
 
                     <Slider
                         :max="200"
@@ -39,7 +43,7 @@
                 </div>
 
                 <div class="flex w-full items-center justify-between gap-2 px-3 py-2">
-                    <Label class="w-full text-center">Opacity</Label>
+                    <Label class="w-full text-center">{{ t('common.opacity') }}</Label>
 
                     <Slider
                         :max="0.1"
@@ -62,6 +66,8 @@
 </template>
 
 <script setup>
+import useI18n from '@/composables/useI18n';
+
 defineProps({
     shineWidth: {
         type: Number,
@@ -76,4 +82,6 @@ defineProps({
         required: true,
     },
 });
+
+const { t } = useI18n();
 </script>

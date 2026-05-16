@@ -123,11 +123,11 @@ export default defineNuxtConfig({
     app: {
         head: {
             titleTemplate: 'Showcode',
-            htmlAttrs: { lang: 'en' },
+            htmlAttrs: { lang: 'zh-CN' },
             meta: [
                 { charset: 'utf-8' },
                 { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-                { name: 'description', content: 'Create beautiful images of code.' },
+                { name: 'description', content: '创建漂亮的代码图片。' },
             ],
             link: [
                 { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
@@ -139,7 +139,6 @@ export default defineNuxtConfig({
                     ? [{ rel: 'manifest', href: '/manifest.webmanifest' }]
                     : []),
             ],
-
         },
     },
-})
+});

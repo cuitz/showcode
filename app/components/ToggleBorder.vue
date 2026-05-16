@@ -1,9 +1,13 @@
 <template>
-    <Toggle v-bind="$attrs" popover-title="Border Properties" settings-tooltip="Configure Border">
+    <Toggle
+        v-bind="$attrs"
+        :popover-title="`${t('common.border')} ${t('common.settings')}`"
+        :settings-tooltip="t('tooltip.configureBorder')"
+    >
         <template #popover>
             <div class="flex flex-col divide-y divide-zinc-200 dark:divide-zinc-800">
                 <div class="flex w-full items-center justify-between gap-2 px-3 py-2">
-                    <Label class="w-full text-center">Width</Label>
+                    <Label class="w-full text-center">{{ t('common.width') }}</Label>
 
                     <Input
                         type="number"
@@ -25,10 +29,14 @@
 </template>
 
 <script setup>
+import useI18n from '@/composables/useI18n';
+
 defineProps({
     borderColor: { type: Object, required: true },
     borderWidth: { type: [Number, String], required: true },
 });
 
 defineEmits(['update:border-width', 'update:border-color']);
+
+const { t } = useI18n();
 </script>

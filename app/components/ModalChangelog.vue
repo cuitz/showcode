@@ -4,7 +4,7 @@
             <DialogHeader
                 class="shrink-0 border-b border-zinc-200 px-5 pt-4 pb-3 dark:border-zinc-800"
             >
-                <DialogTitle class="text-sm font-semibold">Changelog</DialogTitle>
+                <DialogTitle class="text-sm font-semibold">{{ t('modal.changelog') }}</DialogTitle>
             </DialogHeader>
 
             <ScrollArea class="flex-1 overflow-auto">
@@ -30,7 +30,7 @@
                                     class="mb-2 inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium"
                                     :class="badgeClass(section.type)"
                                 >
-                                    {{ section.type }}
+                                    {{ sectionLabel(section.type) }}
                                 </span>
 
                                 <ul class="mt-1.5 space-y-1">
@@ -56,11 +56,13 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import useI18n from '@/composables/useI18n';
 
 defineProps({ modelValue: { type: [Boolean, Object], default: false } });
 defineEmits(['update:modelValue']);
 
 const entries = ref([]);
+const { t } = useI18n();
 
 const badgeClass = (type) => ({
     'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-400':
@@ -68,6 +70,13 @@ const badgeClass = (type) => ({
     'bg-sky-100 text-sky-700 dark:bg-sky-900/40 dark:text-sky-400': type === 'Changed',
     'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-400': type === 'Fixed',
 });
+
+const sectionLabel = (type) =>
+    ({
+        Added: t('changelog.added'),
+        Changed: t('changelog.changed'),
+        Fixed: t('changelog.fixed'),
+    })[type] ?? type;
 
 function parseChangelog(raw) {
     const result = [];

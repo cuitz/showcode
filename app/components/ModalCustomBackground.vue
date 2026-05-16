@@ -10,10 +10,10 @@
                 <DialogTitle class="text-sm font-semibold">
                     {{
                         !type
-                            ? 'Add Custom Background'
+                            ? t('modal.addCustomBackground')
                             : type === 'css'
-                              ? 'Custom CSS Background'
-                              : 'Image Background'
+                              ? t('modal.customCssBackground')
+                              : t('modal.imageBackground')
                     }}
                 </DialogTitle>
             </DialogHeader>
@@ -31,10 +31,10 @@
                     </div>
                     <div>
                         <div class="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                            Custom CSS
+                            {{ t('modal.customCss') }}
                         </div>
                         <div class="text-xs text-zinc-500 dark:text-zinc-400">
-                            Write CSS to create a gradient or pattern
+                            {{ t('modal.customCssDescription') }}
                         </div>
                     </div>
                 </button>
@@ -50,10 +50,10 @@
                     </div>
                     <div>
                         <div class="text-sm font-medium text-zinc-900 dark:text-zinc-100">
-                            Upload Image
+                            {{ t('modal.uploadImage') }}
                         </div>
                         <div class="text-xs text-zinc-500 dark:text-zinc-400">
-                            Use a photo or image as the background
+                            {{ t('modal.uploadImageDescription') }}
                         </div>
                     </div>
                 </button>
@@ -98,7 +98,7 @@
                     >
                         <ImageIcon class="size-6 text-zinc-400 dark:text-zinc-500" />
                         <span class="text-sm text-zinc-500 dark:text-zinc-400">
-                            Click to choose an image
+                            {{ t('modal.chooseImage') }}
                         </span>
                     </button>
                 </template>
@@ -119,13 +119,13 @@
                     </div>
 
                     <p class="text-center text-[11px] text-zinc-400 dark:text-zinc-500">
-                        CSS rules must be placed within an
+                        {{ t('modal.cssRuleNoticeBefore') }}
                         <code
                             class="rounded-sm bg-zinc-100 px-1 py-0.5 text-zinc-500 dark:bg-zinc-800 dark:text-zinc-400"
                         >
                             el
                         </code>
-                        selector.
+                        {{ t('modal.cssRuleNoticeAfter') }}
                     </p>
                 </template>
 
@@ -148,7 +148,7 @@
                 class="flex shrink-0 justify-between border-t border-zinc-200 px-5 py-3 dark:border-zinc-800"
             >
                 <Button variant="outline" @click="cancel">
-                    {{ type ? 'Back' : 'Cancel' }}
+                    {{ type ? t('action.back') : t('action.cancel') }}
                 </Button>
 
                 <Button
@@ -156,10 +156,10 @@
                     @click="save"
                     :variant="backgroundAttrs ? 'default' : 'secondary'"
                     v-tooltip.bottom="{
-                        content: backgroundAttrs ? null : 'Create a background first.',
+                        content: backgroundAttrs ? null : t('modal.createBackgroundFirst'),
                     }"
                 >
-                    Save
+                    {{ t('action.save') }}
                 </Button>
             </div>
         </DialogContent>
@@ -174,6 +174,7 @@ import { useElementSize } from '@vueuse/core';
 import { Cropper } from 'vue-advanced-cropper';
 import { fileDialog } from 'file-select-dialog';
 import useBackgrounds from '@/composables/useBackgrounds';
+import useI18n from '@/composables/useI18n';
 import { computed, onMounted, ref, watch } from 'vue';
 import { CodeIcon, ImageIcon, RefreshCwIcon } from 'lucide-vue-next';
 
@@ -185,13 +186,14 @@ defineProps({
 const emit = defineEmits(['update:modelValue', 'cancelled', 'saved']);
 
 const { backgrounds, addCustomBackground } = useBackgrounds();
+const { t } = useI18n();
 
 const transparentBackground = computed(() =>
     collect(backgrounds.value).where('id', '=', 'transparent').first()
 );
 
-const defaultCssValue = `el {\n  // Enter rules here.\n}`;
-const css = ref(defaultCssValue);
+const defaultCssValue = () => `el {\n  // ${t('modal.defaultCssComment')}\n}`;
+const css = ref(defaultCssValue());
 const type = ref(null);
 const cropper = ref(null);
 const monacoWrapper = ref(null);
@@ -217,7 +219,7 @@ function updateImageDimensions({ canvas }) {
 }
 
 function reset() {
-    css.value = defaultCssValue;
+    css.value = defaultCssValue();
     cropper.value?.reset();
     uploadedImage.value = null;
     backgroundAttrs.value = transparentBackground.value;

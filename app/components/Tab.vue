@@ -11,11 +11,11 @@
         <div class="flex size-full items-center gap-1 px-2">
             <span
                 v-show="!editingName"
-                :title="name || 'Untitled Project'"
+                :title="name || t('placeholder.defaultProjectName')"
                 @dblclick.stop="startEditing"
                 class="flex-1 truncate text-center text-xs"
             >
-                {{ name || 'Untitled Project' }}
+                {{ name || t('placeholder.defaultProjectName') }}
             </span>
 
             <input
@@ -47,13 +47,17 @@
                     class="absolute top-0 right-0 bottom-0 flex items-center pr-1 opacity-0 transition-opacity group-hover:opacity-100"
                     :class="{ 'opacity-0': true }"
                 >
-                    <span class="sr-only">Tab menu</span>
+                    <span class="sr-only">{{ t('tab.menu') }}</span>
                 </button>
             </DropdownMenuTrigger>
 
             <DropdownMenuContent align="start">
-                <DropdownMenuItem @select="$emit('duplicate')">Duplicate</DropdownMenuItem>
-                <DropdownMenuItem @select="toggleEditing">Change Project Name</DropdownMenuItem>
+                <DropdownMenuItem @select="$emit('duplicate')">
+                    {{ t('action.duplicate') }}
+                </DropdownMenuItem>
+                <DropdownMenuItem @select="toggleEditing">
+                    {{ t('tab.changeProjectName') }}
+                </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>
     </div>
@@ -62,6 +66,7 @@
 <script setup>
 import { ref, toRefs, nextTick } from 'vue';
 import { XIcon } from 'lucide-vue-next';
+import useI18n from '@/composables/useI18n';
 
 const props = defineProps({
     name: String,
@@ -72,12 +77,13 @@ const props = defineProps({
 const emit = defineEmits(['close', 'navigate', 'duplicate', 'update:name']);
 
 const { name } = toRefs(props);
+const { t } = useI18n();
 
 const titleInput = ref(null);
 const localName = ref(name.value);
 const editingName = ref(false);
 function close() {
-    if (props.modified && !confirm('Close this project?')) return;
+    if (props.modified && !confirm(t('confirm.closeProject'))) return;
 
     emit('close');
 }

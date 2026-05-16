@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import useProjectStoreFactory from '~/composables/useProjectStoreFactory';
 import useTemplateStore from '~/composables/useTemplateStore';
+import usePreferencesStore from '~/composables/usePreferencesStore';
 import { namespace } from '~/composables/useProjectStores';
 
 describe('useProjectStoreFactory', () => {
@@ -49,9 +50,23 @@ describe('useProjectStoreFactory', () => {
         expect(templates.all()[0].tab.id).not.toBe('test');
     });
 
-    it('uses "Untitled Project" when saving a nameless project as template', () => {
+    it('uses the default locale name when saving a nameless project as template', () => {
         const templates = useTemplateStore();
         const store = useProjectStoreFactory(`${namespace}nameless-test`)();
+
+        store.saveAsTemplate();
+
+        const saved = templates.all().find((t) => t.tab.name === '未命名项目');
+
+        expect(saved).toBeTruthy();
+    });
+
+    it('uses the English name when saving a nameless project as template with English locale', () => {
+        const preferences = usePreferencesStore();
+        const templates = useTemplateStore();
+        const store = useProjectStoreFactory(`${namespace}english-nameless-test`)();
+
+        preferences.uiLocale = 'en-US';
 
         store.saveAsTemplate();
 
@@ -60,4 +75,3 @@ describe('useProjectStoreFactory', () => {
         expect(saved).toBeTruthy();
     });
 });
-

@@ -4,7 +4,9 @@ import { v4 as uuid } from 'uuid';
 import { defineStore } from 'pinia';
 import { namespace } from './useProjectStores';
 import useTemplateStore from './useTemplateStore';
+import usePreferencesStore from '@/composables/usePreferencesStore';
 import { cloneDeep, replace, omit } from 'lodash';
+import { translate } from '@/i18n/messages';
 
 export default function (id) {
     return defineStore(id, {
@@ -45,8 +47,11 @@ export default function (id) {
              */
             export() {
                 const state = this.clone();
+                const preferences = usePreferencesStore();
 
-                const name = state.tab.name || 'Untitled Project';
+                const name =
+                    state.tab.name ||
+                    translate(preferences.uiLocale, 'placeholder.defaultProjectName');
 
                 download(JSON.stringify(state, null, 2), `${name}.json`);
             },
@@ -74,12 +79,15 @@ export default function (id) {
              */
             saveAsTemplate() {
                 const templates = useTemplateStore();
+                const preferences = usePreferencesStore();
 
                 const project = this.clone();
 
                 project.tab.created_at = new Date();
 
-                project.tab.name = project.tab.name || 'Untitled Project';
+                project.tab.name =
+                    project.tab.name ||
+                    translate(preferences.uiLocale, 'placeholder.defaultProjectName');
 
                 templates.add(project);
             },

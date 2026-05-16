@@ -7,7 +7,9 @@
                     class="flex w-48 shrink-0 flex-col border-r border-zinc-200 bg-zinc-50 p-2 dark:border-zinc-800 dark:bg-zinc-900/50"
                 >
                     <DialogHeader class="px-2 pt-1 pb-3">
-                        <DialogTitle class="text-sm font-semibold">Settings</DialogTitle>
+                        <DialogTitle class="text-sm font-semibold">
+                            {{ t('preferences.settings') }}
+                        </DialogTitle>
                     </DialogHeader>
 
                     <TabsList class="flex h-auto flex-col items-stretch gap-0.5 bg-transparent p-0">
@@ -29,8 +31,25 @@
                         <div class="p-5">
                             <!-- Editor -->
                             <TabsContent value="editor" class="mt-0 space-y-4">
-                                <SettingsSection title="Language & Position">
-                                    <SettingsRow label="Default Language">
+                                <SettingsSection :title="t('preferences.interfaceAndEditor')">
+                                    <SettingsRow :label="t('preferences.interfaceLanguage')">
+                                        <Select v-model="locale">
+                                            <SelectTrigger class="w-40">
+                                                <SelectValue />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem
+                                                    v-for="item in locales"
+                                                    :key="item.value"
+                                                    :value="item.value"
+                                                >
+                                                    {{ item.label }}
+                                                </SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </SettingsRow>
+
+                                    <SettingsRow :label="t('preferences.defaultCodeLanguage')">
                                         <Select v-model="preferences.editorLanguage">
                                             <SelectTrigger class="w-40">
                                                 <SelectValue />
@@ -47,7 +66,7 @@
                                         </Select>
                                     </SettingsRow>
 
-                                    <SettingsRow label="Panel Position">
+                                    <SettingsRow :label="t('preferences.panelPosition')">
                                         <Select v-model="preferences.editorOrientation">
                                             <SelectTrigger class="w-40">
                                                 <SelectValue />
@@ -63,13 +82,13 @@
                                                     :key="pos"
                                                     :value="pos"
                                                 >
-                                                    {{ pos }}
+                                                    {{ t(`common.${pos}`) }}
                                                 </SelectItem>
                                             </SelectContent>
                                         </Select>
                                     </SettingsRow>
 
-                                    <SettingsRow label="Tab Size">
+                                    <SettingsRow :label="t('common.tabSize')">
                                         <Select
                                             :model-value="String(preferences.editorTabSize)"
                                             @update:model-value="
@@ -85,15 +104,17 @@
                                                     :key="s"
                                                     :value="String(s)"
                                                 >
-                                                    {{ s }} spaces
+                                                    {{ s }} {{ t('preferences.spaces') }}
                                                 </SelectItem>
                                             </SelectContent>
                                         </Select>
                                     </SettingsRow>
                                 </SettingsSection>
 
-                                <SettingsSection title="Themes">
-                                    <SettingsRow label="Light Theme">
+                                <SettingsSection :title="t('common.themes')">
+                                    <SettingsRow
+                                        :label="`${t('appearance.light')} ${t('common.theme')}`"
+                                    >
                                         <Select v-model="preferences.editorLightTheme">
                                             <SelectTrigger class="w-40">
                                                 <SelectValue />
@@ -110,7 +131,9 @@
                                         </Select>
                                     </SettingsRow>
 
-                                    <SettingsRow label="Dark Theme">
+                                    <SettingsRow
+                                        :label="`${t('appearance.dark')} ${t('common.theme')}`"
+                                    >
                                         <Select v-model="preferences.editorDarkTheme">
                                             <SelectTrigger class="w-40">
                                                 <SelectValue />
@@ -128,8 +151,8 @@
                                     </SettingsRow>
                                 </SettingsSection>
 
-                                <SettingsSection title="Font">
-                                    <SettingsRow label="Family">
+                                <SettingsSection :title="t('common.font')">
+                                    <SettingsRow :label="t('preferences.family')">
                                         <Select v-model="preferences.editorFontFamily">
                                             <SelectTrigger class="w-40">
                                                 <SelectValue />
@@ -146,7 +169,7 @@
                                         </Select>
                                     </SettingsRow>
 
-                                    <SettingsRow label="Size">
+                                    <SettingsRow :label="t('preferences.size')">
                                         <Input
                                             min="1"
                                             type="number"
@@ -155,7 +178,7 @@
                                         />
                                     </SettingsRow>
 
-                                    <SettingsRow label="Line Height">
+                                    <SettingsRow :label="t('common.lineHeight')">
                                         <Input
                                             min="1"
                                             step="0.1"
@@ -165,21 +188,23 @@
                                         />
                                     </SettingsRow>
 
-                                    <SettingsRow label="Ligatures">
+                                    <SettingsRow :label="t('preferences.ligatures')">
                                         <Toggle v-model="preferences.editorFontLigatures" />
                                     </SettingsRow>
                                 </SettingsSection>
 
-                                <SettingsSection title="Behavior">
+                                <SettingsSection :title="t('preferences.behavior')">
                                     <SettingsRow
-                                        label="Strip Initial PHP Tag"
-                                        description="Remove opening <?php tag from preview"
+                                        :label="t('preferences.stripInitialPhpTag')"
+                                        :description="
+                                            t('preferences.stripInitialPhpTagDescription')
+                                        "
                                     >
                                         <Toggle v-model="preferences.stripIntialPhpTag" />
                                     </SettingsRow>
                                 </SettingsSection>
 
-                                <SettingsSection title="Initial Editor Value">
+                                <SettingsSection :title="t('preferences.initialEditorValue')">
                                     <div
                                         class="overflow-hidden rounded-lg border border-zinc-200 dark:border-zinc-800"
                                     >
@@ -195,8 +220,8 @@
 
                             <!-- Preview -->
                             <TabsContent value="preview" class="mt-0 space-y-4">
-                                <SettingsSection title="Theme">
-                                    <SettingsRow label="Default Theme">
+                                <SettingsSection :title="t('common.theme')">
+                                    <SettingsRow :label="t('preferences.defaultTheme')">
                                         <Select v-model="preferences.previewThemeName">
                                             <SelectTrigger class="w-40">
                                                 <SelectValue />
@@ -214,8 +239,8 @@
                                     </SettingsRow>
                                 </SettingsSection>
 
-                                <SettingsSection title="Font">
-                                    <SettingsRow label="Family">
+                                <SettingsSection :title="t('common.font')">
+                                    <SettingsRow :label="t('preferences.family')">
                                         <Select v-model="preferences.previewFontFamily">
                                             <SelectTrigger class="w-40">
                                                 <SelectValue />
@@ -232,7 +257,7 @@
                                         </Select>
                                     </SettingsRow>
 
-                                    <SettingsRow label="Size">
+                                    <SettingsRow :label="t('preferences.size')">
                                         <Input
                                             min="1"
                                             type="number"
@@ -241,7 +266,7 @@
                                         />
                                     </SettingsRow>
 
-                                    <SettingsRow label="Line Height">
+                                    <SettingsRow :label="t('common.lineHeight')">
                                         <Input
                                             min="0"
                                             type="number"
@@ -251,8 +276,8 @@
                                     </SettingsRow>
                                 </SettingsSection>
 
-                                <SettingsSection title="Focus">
-                                    <SettingsRow label="Blur Strength">
+                                <SettingsSection :title="t('preferences.focus')">
+                                    <SettingsRow :label="t('preferences.blurStrength')">
                                         <Input
                                             type="number"
                                             v-model="preferences.previewCodeBlurStrength"
@@ -261,20 +286,20 @@
                                     </SettingsRow>
                                 </SettingsSection>
 
-                                <SettingsSection title="Fit to Window">
-                                    <SettingsRow label="Always Lock">
+                                <SettingsSection :title="t('preferences.fitToWindow')">
+                                    <SettingsRow :label="t('preferences.alwaysLock')">
                                         <Toggle v-model="preferences.previewLockToWindow" />
                                     </SettingsRow>
 
                                     <template v-if="preferences.previewLockToWindow">
-                                        <SettingsRow label="Padding X">
+                                        <SettingsRow :label="t('common.paddingX')">
                                             <Input
                                                 v-model="preferences.previewLockToWindowPaddingX"
                                                 class="w-20"
                                             />
                                         </SettingsRow>
 
-                                        <SettingsRow label="Padding Y">
+                                        <SettingsRow :label="t('common.paddingY')">
                                             <Input
                                                 v-model="preferences.previewLockToWindowPaddingY"
                                                 class="w-20"
@@ -286,13 +311,13 @@
 
                             <!-- Social -->
                             <TabsContent value="social" class="mt-0 space-y-4">
-                                <SettingsSection title="Social Badge">
-                                    <SettingsRow label="Show Badge">
+                                <SettingsSection :title="t('common.socialBadge')">
+                                    <SettingsRow :label="t('preferences.showBadge')">
                                         <Toggle v-model="preferences.showSocialBadge" />
                                     </SettingsRow>
 
                                     <template v-if="preferences.showSocialBadge">
-                                        <SettingsRow label="Platform">
+                                        <SettingsRow :label="t('common.platform')">
                                             <Select v-model="preferences.socialType">
                                                 <SelectTrigger class="w-40">
                                                     <SelectValue />
@@ -309,7 +334,7 @@
                                             </Select>
                                         </SettingsRow>
 
-                                        <SettingsRow label="Position">
+                                        <SettingsRow :label="t('common.position')">
                                             <Select v-model="preferences.socialPosition">
                                                 <SelectTrigger class="w-40">
                                                     <SelectValue />
@@ -326,14 +351,14 @@
                                             </Select>
                                         </SettingsRow>
 
-                                        <SettingsRow label="Username">
+                                        <SettingsRow :label="t('common.username')">
                                             <Input
                                                 v-model="preferences.socialUsername"
                                                 class="w-40"
                                             />
                                         </SettingsRow>
 
-                                        <SettingsRow label="Display Name">
+                                        <SettingsRow :label="t('common.displayName')">
                                             <Input
                                                 v-model="preferences.socialDisplayName"
                                                 class="w-40"
@@ -345,10 +370,10 @@
 
                             <!-- Export -->
                             <TabsContent value="export" class="mt-0 space-y-4">
-                                <SettingsSection title="Image Export">
+                                <SettingsSection :title="t('preferences.imageExport')">
                                     <SettingsRow
-                                        label="Pixel Ratio"
-                                        description="Higher values produce larger, sharper images"
+                                        :label="t('preferences.pixelRatio')"
+                                        :description="t('preferences.pixelRatioDescription')"
                                     >
                                         <Select
                                             :model-value="String(preferences.exportPixelRatio)"
@@ -378,15 +403,27 @@
                                 <h3
                                     class="mb-2 text-sm font-medium text-zinc-500 dark:text-zinc-400"
                                 >
-                                    Theme
+                                    {{ t('common.theme') }}
                                 </h3>
 
                                 <div class="flex items-center justify-center gap-3">
                                     <button
                                         v-for="mode in [
-                                            { value: 'light', label: 'Light', icon: SunIcon },
-                                            { value: 'dark', label: 'Dark', icon: MoonIcon },
-                                            { value: 'auto', label: 'Auto', icon: SunriseIcon },
+                                            {
+                                                value: 'light',
+                                                label: t('appearance.light'),
+                                                icon: SunIcon,
+                                            },
+                                            {
+                                                value: 'dark',
+                                                label: t('appearance.dark'),
+                                                icon: MoonIcon,
+                                            },
+                                            {
+                                                value: 'auto',
+                                                label: t('appearance.auto'),
+                                                icon: SunriseIcon,
+                                            },
                                         ]"
                                         :key="mode.value"
                                         @click="setColorMode(mode.value)"
@@ -406,17 +443,17 @@
                                     </button>
                                 </div>
 
-                                <SettingsSection title="Danger Zone">
+                                <SettingsSection :title="t('preferences.dangerZone')">
                                     <SettingsRow
-                                        label="Reset All Preferences"
-                                        description="This will restore all settings to their defaults"
+                                        :label="t('preferences.resetAll')"
+                                        :description="t('preferences.resetDescription')"
                                     >
                                         <Button
                                             variant="destructive"
                                             size="sm"
                                             @click="preferences.reset()"
                                         >
-                                            Reset
+                                            {{ t('action.reset') }}
                                         </Button>
                                     </SettingsRow>
                                 </SettingsSection>
@@ -444,6 +481,7 @@ import {
 } from 'lucide-vue-next';
 import useFonts from '@/composables/useFonts';
 import useSocials from '@/composables/useSocials';
+import useI18n from '@/composables/useI18n';
 import useApplicationStore, { colorMode } from '@/composables/useApplicationStore';
 import { computed, ref, onMounted } from 'vue';
 import { default as usePreferencesStore, defaults } from '@/composables/usePreferencesStore';
@@ -458,25 +496,26 @@ const { $shiki } = useNuxtApp();
 const activeTab = ref('editor');
 const isAutoColorScheme = ref(null);
 const preferences = usePreferencesStore();
+const { locale, locales, t } = useI18n();
 const { types: socialTypes, positions: socialPositions } = useSocials();
 
 const { fontFamilies } = useFonts();
 
 const languages = computed(() => orderBy($shiki.languages()));
 
-const tabs = [
-    { value: 'editor', label: 'Editor', icon: CodeIcon },
-    { value: 'preview', label: 'Preview', icon: EyeIcon },
-    { value: 'social', label: 'Social', icon: ShareIcon },
-    { value: 'export', label: 'Export', icon: DownloadIcon },
-    { value: 'appearance', label: 'Appearance', icon: PaletteIcon },
-];
+const tabs = computed(() => [
+    { value: 'editor', label: t('preferences.editor'), icon: CodeIcon },
+    { value: 'preview', label: t('preferences.preview'), icon: EyeIcon },
+    { value: 'social', label: t('preferences.social'), icon: ShareIcon },
+    { value: 'export', label: t('preferences.export'), icon: DownloadIcon },
+    { value: 'appearance', label: t('common.theme'), icon: PaletteIcon },
+]);
 
 const editorThemes = computed(() => {
     const themes = Object.keys(preferences.editorThemes).map((theme) => {
         let title = preferences.editorThemes[theme];
         if ([defaults.editorLightTheme, defaults.editorDarkTheme].includes(theme)) {
-            title += ' (Default)';
+            title += ` (${t('common.default')})`;
         }
         return { name: theme, title };
     });

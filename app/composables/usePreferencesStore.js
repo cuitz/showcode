@@ -2,8 +2,11 @@ import { defineStore } from 'pinia';
 import { useLocalStorage } from '@vueuse/core';
 import themes from 'monaco-themes/themes/themelist.json';
 import { pick, defaults as applyDefaults } from 'lodash';
+import { DEFAULT_LOCALE, translate } from '@/i18n/messages';
 
 export const defaults = {
+    uiLocale: DEFAULT_LOCALE,
+
     editorTabSize: 4,
     editorFontSize: 12,
     editorLineHeight: 1.5,
@@ -65,7 +68,7 @@ export default defineStore('preferences', {
 
     actions: {
         reset() {
-            if (confirm('Reset all preferences?')) {
+            if (confirm(translate(this.uiLocale, 'confirm.resetPreferences'))) {
                 this.$state = defaults;
             }
         },

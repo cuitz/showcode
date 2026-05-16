@@ -1,9 +1,9 @@
 <template>
     <div class="window-controls flex">
         <button
-            aria-label="minimize"
+            :aria-label="t('action.minimize')"
             @click="$ipc.send('minimize')"
-            title="Minimize"
+            :title="t('action.minimize')"
             tabindex="-1"
             class="window-control minimize -iz flex"
         >
@@ -15,8 +15,8 @@
         <button
             v-if="state === 'maximized'"
             @click="$ipc.send('unmaximize')"
-            aria-label="restore"
-            title="Restore"
+            :aria-label="t('window.restore')"
+            :title="t('window.restore')"
             tabindex="-1"
             class="window-control restore"
         >
@@ -29,9 +29,9 @@
 
         <button
             v-else
-            aria-label="maximize"
+            :aria-label="t('action.maximize')"
             @click="$ipc.send('maximize')"
-            title="Maximize"
+            :title="t('action.maximize')"
             tabindex="-1"
             class="window-control maximize"
         >
@@ -42,8 +42,8 @@
 
         <button
             @click="$ipc.send('close')"
-            aria-label="close"
-            title="Close"
+            :aria-label="t('action.close')"
+            :title="t('action.close')"
             tabindex="-1"
             class="window-control close"
         >
@@ -58,8 +58,10 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
+import useI18n from '@/composables/useI18n';
 
 const { $ipc } = useNuxtApp();
+const { t } = useI18n();
 
 const state = ref(null);
 

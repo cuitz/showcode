@@ -3,7 +3,7 @@
         target="_blank"
         href="https://github.com/stevebauman/showcode"
         class="github-corner group focus:ring-0 focus:outline-hidden"
-        aria-label="View source on GitHub"
+        :aria-label="t('github.viewSource')"
     >
         <svg
             viewBox="0 0 250 250"
@@ -26,6 +26,12 @@
         </svg>
     </a>
 </template>
+
+<script setup>
+import useI18n from '@/composables/useI18n';
+
+const { t } = useI18n();
+</script>
 
 <style>
 .github-corner:hover .octo-arm,

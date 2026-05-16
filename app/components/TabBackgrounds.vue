@@ -5,7 +5,7 @@
                 <ButtonBackground
                     :active="false"
                     v-tooltip.bottom="{
-                        content: 'Add Custom Background',
+                        content: t('action.addCustomBackground'),
                     }"
                     @click="$emit('add')"
                     class="flex items-center justify-center border border-zinc-200 bg-zinc-50 hover:bg-zinc-200 active:bg-white dark:border-zinc-700 dark:bg-zinc-600 dark:hover:bg-zinc-950 dark:active:bg-black"
@@ -16,7 +16,7 @@
                 <ColorPicker :value="backgroundColor" @change="$emit('color', $event)">
                     <ButtonBackground
                         :active="!!backgroundColor"
-                        v-tooltip.bottom="'Pick Color'"
+                        v-tooltip.bottom="t('action.pickColor')"
                         class="flex items-center justify-center border border-zinc-200 bg-zinc-50 hover:bg-zinc-200 active:bg-white dark:border-zinc-700 dark:bg-zinc-600 dark:hover:bg-zinc-950 dark:active:bg-black"
                     >
                         <DropletIcon class="size-5 text-zinc-600 dark:text-zinc-300" />
@@ -35,7 +35,7 @@
                                     })
                                 "
                             >
-                                Save
+                                {{ t('action.save') }}
                             </Button>
                         </div>
                     </template>
@@ -60,6 +60,7 @@
 
 <script setup>
 import useBackgrounds from '@/composables/useBackgrounds';
+import useI18n from '@/composables/useI18n';
 import { PlusCircleIcon, DropletIcon } from 'lucide-vue-next';
 import { computed, onBeforeUnmount, onMounted, ref, toRefs, watch } from 'vue';
 import useScrollRefIntoView from '@/composables/useScrollRefIntoView';
@@ -76,6 +77,7 @@ const props = defineProps({
 defineEmits(['add', 'color', 'delete', 'select']);
 
 const { addCustomBackground } = useBackgrounds();
+const { t } = useI18n();
 const { background, backgrounds } = toRefs(props);
 const { scrollRefIntoView } = useScrollRefIntoView();
 

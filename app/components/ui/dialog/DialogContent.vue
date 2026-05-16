@@ -9,6 +9,7 @@ import {
     useForwardPropsEmits,
 } from 'reka-ui';
 import { cn } from '@/lib/utils';
+import useI18n from '@/composables/useI18n';
 
 const props = defineProps({
     forceMount: { type: Boolean, required: false },
@@ -29,6 +30,7 @@ const emits = defineEmits([
 const delegatedProps = reactiveOmit(props, 'class');
 
 const forwarded = useForwardPropsEmits(delegatedProps, emits);
+const { t } = useI18n();
 </script>
 
 <template>
@@ -51,7 +53,7 @@ const forwarded = useForwardPropsEmits(delegatedProps, emits);
                 class="absolute top-4 right-4 rounded-xs opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:ring-2 focus:ring-zinc-950 focus:ring-offset-2 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-zinc-100 data-[state=open]:text-zinc-500 dark:ring-offset-zinc-950 dark:focus:ring-zinc-300 dark:data-[state=open]:bg-zinc-800 dark:data-[state=open]:text-zinc-400"
             >
                 <X class="size-4" />
-                <span class="sr-only">Close</span>
+                <span class="sr-only">{{ t('action.close') }}</span>
             </DialogClose>
         </DialogContent>
     </DialogPortal>
