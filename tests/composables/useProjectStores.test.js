@@ -143,13 +143,49 @@ describe('useProjectStores', () => {
 
     it('duplicates a project', () => {
         const { projects, addNewProject, duplicateProject } = useProjectStores();
+        const { currentTab } = useCurrentTab();
 
         const project = addNewProject();
 
-        duplicateProject(project);
+        project.$patch({
+            page: { editors: [{ code: 'echo "Hello";' }] },
+            settings: { themeName: 'github-dark' },
+            tab: { name: 'Original Project' },
+        });
+
+        const duplicate = duplicateProject(project);
 
         expect(projects.value).toHaveLength(2);
         expect(projects.value[1].tab.id).not.toBe(project.tab.id);
+        expect(duplicate.tab.name).toBe('Original Project');
+        expect(duplicate.page).toEqual(project.page);
+        expect(duplicate.settings).toEqual(project.settings);
+        expect(currentTab.value).toBe(duplicate.tab.id);
+    });
+
+    it('adds a project from a saved project', () => {
+        const { projects, addProjectFromSavedProject } = useProjectStores();
+        const { currentTab } = useCurrentTab();
+
+        const savedProject = {
+            version: '1.26.1',
+            page: { editors: [{ code: 'echo "Saved";' }] },
+            settings: { themeName: 'github-dark' },
+            tab: {
+                id: 'saved-project',
+                name: 'Saved Project',
+            },
+        };
+
+        const project = addProjectFromSavedProject(savedProject);
+
+        expect(projects.value).toHaveLength(1);
+        expect(project.tab.id).not.toBe(savedProject.tab.id);
+        expect(project.tab.saved_project_id).toBe(savedProject.tab.id);
+        expect(project.tab.name).toBe('Saved Project');
+        expect(project.page).toEqual(savedProject.page);
+        expect(project.settings).toEqual(savedProject.settings);
+        expect(project.modified).toBe(false);
+        expect(currentTab.value).toBe(project.tab.id);
     });
 });
-

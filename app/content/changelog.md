@@ -1,3 +1,38 @@
+## June 13, 2026 — Version 2.3
+
+**Added**
+
+- Added recent saved projects to the File menu and Saved Projects modal
+- Added active project names and unsaved-change indicators to the window title
+
+**Changed**
+
+- Clarified how saved projects differ from automatically restored open tabs
+- Improved saved project close and open dialog copy
+
+---
+
+## June 13, 2026 — Version 2.2
+
+**Added**
+
+- Ability to save projects and reopen them later from the File menu
+- Ability to save a project before closing a modified tab
+- Added desktop-style project save actions: Save, Save As..., Open..., and Close Tab
+- Added a right-click tab menu for saving, renaming, duplicating, and closing project tabs
+
+**Changed**
+
+- Project renaming now uses a dialog instead of inline tab editing
+- Command/Ctrl+S now saves the current project instead of copying the preview image
+
+**Fixed**
+
+- Fixed quick saves sometimes missing the latest project edits
+- Fixed quick saves sometimes storing an outdated project preview thumbnail
+
+---
+
 ## May 16, 2026
 
 **Added**

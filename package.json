@@ -1,6 +1,6 @@
 {
     "name": "showcode",
-    "version": "2.1.1",
+    "version": "2.3.0",
     "private": true,
     "description": "Generate beautiful images of code.",
     "repository": {
@@ -11,6 +11,7 @@
     "type": "module",
     "scripts": {
         "build": "nuxt build",
+        "background-thumbnails": "node scripts/backgrounds/generate-thumbnails.mjs",
         "dev": "nuxt dev",
         "fetch-themes": "npx tsx scripts/themes/fetch.ts",
         "format": "prettier --write 'app/**/*.{vue,js,ts}'",
