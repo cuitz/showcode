@@ -4,37 +4,28 @@
             class="absolute right-1 bottom-1 left-1 z-10 rounded-md border border-zinc-200 bg-white/80 opacity-60 backdrop-blur-xl transition-opacity duration-200 focus-within:opacity-100 hover:opacity-100 dark:border-zinc-800 dark:bg-zinc-900/80"
         >
             <ScrollArea orientation="horizontal">
-                <div ref="toolbar" class="flex w-full items-center justify-between">
-                    <div
-                        class="m-2 flex items-center gap-2 rounded-lg focus-within:ring-2 focus-within:ring-violet-800 dark:focus-within:ring-violet-500"
-                    >
-                        <label
-                            class="hidden pl-2 text-xs leading-none font-semibold tracking-wide whitespace-nowrap text-zinc-400 uppercase xl:inline-block dark:text-zinc-500"
-                        >
-                            {{ t('editor.lang') }}
-                        </label>
-
-                        <Select
-                            :model-value="language"
-                            @update:model-value="$emit('update:language', $event)"
-                        >
-                            <SelectTrigger>
-                                <SelectValue />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectItem v-for="lang in languages" :key="lang" :value="lang">
-                                    {{ lang }}
-                                </SelectItem>
-                            </SelectContent>
-                        </Select>
-                    </div>
-
-                    <div class="flex items-stretch gap-2">
-                        <div
-                            class="mr-2 flex items-center gap-2 rounded-lg focus-within:ring-2 focus-within:ring-violet-800 lg:mr-0 dark:focus-within:ring-violet-500"
-                        >
+                <div ref="toolbar" class="box-border flex w-full items-center px-2 py-1.5">
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-2">
                             <label
-                                class="hidden pl-2 text-xs leading-none font-semibold tracking-wide whitespace-nowrap text-zinc-400 uppercase xl:inline-block dark:text-zinc-500"
+                                class="hidden text-[0.6875rem] leading-none font-medium tracking-wide whitespace-nowrap text-zinc-500 uppercase xl:inline-block dark:text-zinc-400"
+                            >
+                                {{ t('editor.lang') }}
+                            </label>
+
+                            <SearchableSelect
+                                :model-value="language"
+                                :options="languages"
+                                :placeholder="t('editor.searchLanguages')"
+                                :empty-text="t('editor.noLanguagesFound')"
+                                class="w-32"
+                                @update:model-value="$emit('update:language', $event)"
+                            />
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <label
+                                class="hidden text-[0.6875rem] leading-none font-medium tracking-wide whitespace-nowrap text-zinc-500 uppercase xl:inline-block dark:text-zinc-400"
                             >
                                 {{ t('common.tabSize') }}
                             </label>
@@ -43,7 +34,7 @@
                                 :model-value="String(tabSize)"
                                 @update:model-value="$emit('update:tab-size', $event)"
                             >
-                                <SelectTrigger>
+                                <SelectTrigger class="focus:ring-0 focus:ring-offset-0">
                                     <SelectValue />
                                 </SelectTrigger>
                                 <SelectContent>
@@ -57,52 +48,12 @@
                                 </SelectContent>
                             </Select>
                         </div>
+                    </div>
 
+                    <div class="ml-auto flex items-stretch gap-3 pl-3">
                         <div
-                            class="hidden items-center rounded-lg lg:flex"
-                            :class="{ 'mr-2': !canToggleLayout }"
+                            class="hidden items-center border-l border-zinc-200 pl-3 lg:flex dark:border-zinc-800"
                         >
-                            <PopoverPanel
-                                :title="t('editor.emojiPicker')"
-                                auto-hide
-                                :resets="false"
-                                class="flex h-full items-stretch"
-                            >
-                                <template #trigger>
-                                    <ToolbarButton
-                                        class="mr-0.5 rounded-lg"
-                                        v-tooltip="t('action.addEmoji')"
-                                    >
-                                        <SmileIcon class="size-5" />
-                                    </ToolbarButton>
-                                </template>
-
-                                <div class="border-b border-zinc-200 p-2 dark:border-zinc-800">
-                                    <Input
-                                        v-model="search"
-                                        type="search"
-                                        :placeholder="t('common.search')"
-                                        class="w-full"
-                                    />
-                                </div>
-
-                                <ScrollArea class="max-h-52 w-80">
-                                    <div
-                                        class="grid h-full grid-flow-row auto-rows-max grid-cols-8 gap-2 p-2"
-                                    >
-                                        <button
-                                            v-for="emoji in filteredEmojis"
-                                            class="rounded-lg text-2xl hover:bg-zinc-50 active:bg-zinc-200 dark:hover:bg-zinc-600 dark:active:bg-zinc-800"
-                                            :key="emoji.name"
-                                            :title="emoji.name"
-                                            @click="addEmoji(emoji)"
-                                        >
-                                            {{ emoji.emoji }}
-                                        </button>
-                                    </div>
-                                </ScrollArea>
-                            </PopoverPanel>
-
                             <ToolbarButton
                                 v-if="canRemove && canMoveUp"
                                 class="mr-0.5 rounded-l-lg"
@@ -150,7 +101,10 @@
                             </ToolbarButton>
                         </div>
 
-                        <div v-if="canToggleLayout" class="mr-2 hidden items-center lg:flex">
+                        <div
+                            v-if="canToggleLayout"
+                            class="hidden items-center border-l border-zinc-200 pl-3 lg:flex dark:border-zinc-800"
+                        >
                             <ToolbarButton
                                 v-if="landscape"
                                 class="rounded-l-lg"
@@ -215,25 +169,14 @@ import {
     PlusIcon,
     MinusIcon,
     LogInIcon,
-    SmileIcon,
     ColumnsIcon,
     ArrowUpIcon,
     ArrowDownIcon,
-    ArrowLeftIcon,
-    ArrowRightIcon,
     CreditCardIcon,
 } from 'lucide-vue-next';
 import { ref, watch, toRefs, computed, onMounted, onUnmounted } from 'vue';
-import Fuse from 'fuse.js';
-import groupedEmojis from '~/data/emojis';
 import { useResizeObserver } from '@vueuse/core';
-import { debounce, flatten } from 'lodash';
 import useI18n from '@/composables/useI18n';
-
-// @see https://github.com/muan/unicode-emoji-json
-const emojis = flatten(Object.keys(groupedEmojis).map((group) => groupedEmojis[group])).filter(
-    (emoji) => emoji.emoji.codePointAt(0).toString(16).startsWith('1f')
-);
 
 const props = defineProps({
     id: { type: String, required: true },
@@ -273,12 +216,7 @@ const { options: languageOptions } = useLanguages();
 const width = ref(0);
 const height = ref(0);
 const root = ref(null);
-const search = ref('');
-const monaco = ref(null);
 const toolbar = ref(null);
-const filteredEmojis = ref(emojis);
-
-const fuse = new Fuse(emojis, { keys: ['name'] });
 
 const languages = computed(() => languageOptions($shiki.languages()));
 const landscape = computed(() => ['left', 'right'].includes(orientation.value));
@@ -289,21 +227,12 @@ const languageAlias = computed(
         language.value
 );
 
-const addEmoji = (emoji) => monaco.value.editor.trigger('keyboard', 'type', { text: emoji.emoji });
-
 function updateMonacoDimensions() {
     if (root.value && root.value.offsetParent) {
         width.value = root.value.clientWidth;
         height.value = root.value.clientHeight;
     }
 }
-
-watch(
-    search,
-    debounce((value) => {
-        filteredEmojis.value = value ? fuse.search(value).map((result) => result.item) : emojis;
-    }, 250)
-);
 
 useResizeObserver(document.body, updateMonacoDimensions);
 

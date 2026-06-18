@@ -118,6 +118,8 @@ export const messages = {
 
         'editor.emojiPicker': '表情选择器',
         'editor.lang': '语言',
+        'editor.noLanguagesFound': '未找到语言。',
+        'editor.searchLanguages': '搜索语言...',
 
         'help.addedLine': '新增行',
         'help.codeHighlighting': '代码高亮',
@@ -354,6 +356,8 @@ export const messages = {
 
         'editor.emojiPicker': 'Emoji Picker',
         'editor.lang': 'Lang',
+        'editor.noLanguagesFound': 'No languages found.',
+        'editor.searchLanguages': 'Search languages...',
 
         'help.addedLine': 'Added Line',
         'help.codeHighlighting': 'Code Highlighting',
